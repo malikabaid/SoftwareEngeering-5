@@ -4,6 +4,10 @@ import mysql from "mysql2";
 const app = express();
 const port = 3000;
 
+app.set("view engine", "pug");
+
+app.use(express.static("static"));
+
 const db = mysql.createConnection({
   host: process.env.DATABASE_HOST || "localhost",
   user: "user",
@@ -13,7 +17,7 @@ const db = mysql.createConnection({
 
 app.get("/", (req, res) => {
   res.send("Hello and Welcome");
-});
+})
 
 app.get("/cities", (req, res) => {
   db.execute("SELECT * FROM `city`", (err, rows, fields) => {
@@ -22,9 +26,7 @@ app.get("/cities", (req, res) => {
   });
 });
 
-app.use(express.static("static"));
-
-console.log(process.env.NODE_ENV);
+//console.log(process.env.NODE_ENV);
 
 app.get("/", (req, res) => {
   res.render("index");
