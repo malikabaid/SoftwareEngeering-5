@@ -15,9 +15,9 @@ const db = mysql.createConnection({
   database: "world",
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello and Welcome");
-})
+/*app.get("/", (req, res) => {
+  res.send("index");
+})*/
 
 app.get("/cities", (req, res) => {
   db.execute("SELECT * FROM `city`", (err, rows, fields) => {
