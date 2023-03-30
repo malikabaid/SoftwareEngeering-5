@@ -10,7 +10,6 @@ block content
       th.text-center 🏴
       th Country
       th.number Population
-      th SurfaceArea
     tbody
       each row in rows
         tr
@@ -18,9 +17,3 @@ block content
           td #{row.Name}
           - const population = new Intl.NumberFormat().format(row.Population);
           td.fit.number #{population}
-        
-        tr
-          td.fit #{row.SurfaceArea}
-          td #{row.Name}
-          - const SurfArea = new Intl.NumberFormat().format(row.SurfaceArea);
-          td.fit.number #{SurfArea}
