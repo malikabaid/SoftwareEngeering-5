@@ -1,6 +1,6 @@
 :root {
     --clr-table: rgba(0,0,0,0.75);
-  }
+  }/*Test*/
   
   table {
     border: 1px solid var(--clr-table);
