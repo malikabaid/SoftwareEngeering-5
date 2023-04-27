@@ -1,8 +1,7 @@
 /* Import dependencies */
 import express from "express";
-import mysql from "mysql2/promise";
 import bcrypt from "bcryptjs";
-import DatabaseService from "./services/database.service.mjs";
+import DatabaseService from "./services/database.services.mjs";
 import session from "express-session";
 
 /* Create express instance */
@@ -26,9 +25,6 @@ app.set("view engine", "pug");
 
 // Serve assets from 'static' folder
 app.use(express.static("static"));
-
-const db = await DatabaseService.connect();
-const { conn } = db;
 
 /* Landing route */
 app.get("/", (req, res) => {
@@ -81,10 +77,10 @@ app.post("/cities/:id", async (req, res) => {
 });
 
 // Returns JSON array of cities
-app.get("/api/cities", async (req, res) => {
+/*app.get("/api/cities", async (req, res) => {
   const [rows, fields] = await db.getCities();
   return res.send(rows);
-});
+});*/
 
 app.get("/api/countries", async (req, res) => {
   const countries = await db.getCountries();
