@@ -1,5 +1,6 @@
 import express from "express";
 import mysql from "mysql2/promise";
+import DatabaseService from "./services/database.service.mjs";
 
 /*const express = require("express");
 const mysql = require("mysql2");*/
@@ -11,6 +12,9 @@ const port = 3000;
 app.set("view engine", "pug");
 
 app.use(express.static("static"));
+
+const db = await DatabaseService.connect();
+
 
 console.log(process.env.NODE_ENV);
 
@@ -76,11 +80,11 @@ app.get("/cities", async (req, res) => {
       return res.send(rows);
     });
 
-/*app.get("/cities", async (req, res) => {
+app.get("/cities", async (req, res) => {
   const [rows, fields] = await db.execute("SELECT * FROM `city`");
   return res.render(rows);
 
-});*/
+});
 
 app.get("/about", (req, res) => {
   res.render("about", {title: "Boring"});
