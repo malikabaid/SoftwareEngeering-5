@@ -1,22 +1,17 @@
-export default class City{
+export default class City {
     id;
     name;
-    countrycode;
+    countryCode;
     district;
     population;
-
-    constructor(id,name,countrycode,district,population)
-    {
-        this.id;
-        this.name;
-        this.countrycode;
-        this.district;
-        this.population;
-
+    country;
+  
+    constructor(id, name, countryCode, district, population) {
+      this.id = id;
+      this.name = name;
+      this.countryCode = countryCode;
+      this.district = district;
+      this.population = population;
     }
-
-    print()
-    {
-        console.log('${id} $(name) has $(population) people');
-    }
-}
+  }
+  
