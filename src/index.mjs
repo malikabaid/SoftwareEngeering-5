@@ -3,10 +3,28 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import DatabaseService from "./services/database.services.mjs";
 import session from "express-session";
+import mysql from "mysql2/promise";
 
 /* Create express instance */
 const app = express();
 const port = 3000;
+
+app.use(express.urlencoded({ extended: true}));
+
+app.use(express.static("static"));
+app.set("view engine","pug");
+
+console.log(process.env.NODE_ENV);
+
+const db = await mysql.createConnection({
+  host: process.env.DATABASE_HOST || "localhost",
+  user: "user",
+  password: "password",
+  database: "world",
+});
+
+const db1 = await DatabaseService.connect();
+const {conn} = db1;
 
 /* Add form data middleware */
 app.use(express.urlencoded({ extended: true }));
@@ -51,12 +69,32 @@ app.get("/about", (req, res) => {
   res.render("about", { title: "Boring about page" });
 });
 
-app.get("/cities", async (req, res) => {
-  const [rows, fields] = await db.getCities();
-  /* Render cities.pug with data passed as plain object */
-  return res.render("cities", { rows, fields });
-});
 
+app.get("/cities", async (req,res) => {
+  try {
+    const [rows, fields] = await db.execute("SELECT * FROM `city`");
+    return res.render("cities",{rows, fields});
+  }catch (err){
+    console.error(err);
+    }
+  });
+
+  app.get("/countries", async (req,res) => {
+  try {
+    const [rows, fields] = await db.execute("SELECT * FROM `country`");
+    return res.render("countries",{rows, fields});
+  }catch (err){
+    console.error(err);
+    }
+  });
+  app.get("/api/cities",async (req,res) => {
+    const [rows,fields] = await db.execute("SELECT * FROM `city`");
+    return res.send(rows);
+  });
+  app.get("/api/countries",async (req,res) => {
+    const [rows,fields] = await db.execute("SELECT * FROM `country`");
+    return res.send(rows);
+  });
 app.get("/cities/:id", async (req, res) => {
   const cityId = req.params.id;
   const city = await db.getCity(cityId);
@@ -77,15 +115,16 @@ app.post("/cities/:id", async (req, res) => {
 });
 
 // Returns JSON array of cities
-/*app.get("/api/cities", async (req, res) => {
+app.get("/api/cities", async (req, res) => {
   const [rows, fields] = await db.getCities();
   return res.send(rows);
-});*/
+});
 
 app.get("/api/countries", async (req, res) => {
   const countries = await db.getCountries();
   res.send(countries);
 });
+
 
 /* Authentication */
 
